@@ -87,7 +87,7 @@ BALANCED PARAGRAPH COMPOSITION (AE Advanced Text Wrap)
   ```
 - Mirrored in `layer.comment` for native After Effects metadata inspection.
 - **Idempotent Multi-Pass Wrapping**: When switching between wrap methods (e.g. from Balanced to Optical Pyramid) or adjusting width constraints, the engine always wraps from the stored pristine original text rather than re-wrapping already broken lines.
-- Clicking **"↺ Restore Original Text"** instantly reverts the layer back to its exact pre-wrap text, box geometry, anchor point, and position without alerts.
+- Clicking **"↺ Restore Original Text"** instantly reverts the layer back to its exact pre-wrap text, box geometry, anchor point, and position without alerts. It automatically detects and removes Anchor Point and Position expressions originating from this `.JSX` (`expression = ""; expressionEnabled = false;`), safely restoring any prior custom user expressions or reverting to clean manual transforms under a single AE Undo group.
 
 ### 📍 7. Visual Position Matching (Zero-Drift Paragraph Anchoring)
 - **Visually Match Position of Original Text (Default: Enabled / ON)**:
