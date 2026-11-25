@@ -89,7 +89,19 @@ BALANCED PARAGRAPH COMPOSITION (AE Advanced Text Wrap)
 - **Idempotent Multi-Pass Wrapping**: When switching between wrap methods (e.g. from Balanced to Optical Pyramid) or adjusting width constraints, the engine always wraps from the stored pristine original text rather than re-wrapping already broken lines.
 - Clicking **"↺ Restore Original Text"** instantly reverts the layer back to its exact pre-wrap text, box geometry, anchor point, and position without alerts.
 
-### ⚓ 7. Anchor Point Auto-Alignment to Text Justification (`AE-Align-AnchorPoint` Integration)
+### 📍 7. Visual Position Matching (Zero-Drift Paragraph Anchoring)
+- **Visually Match Position of Original Text (Default: Enabled / ON)**:
+  - When text wraps from a single long line into a multi-line paragraph, new lines normally expand downward, causing the visual center of titles, lower-thirds, or center-aligned cards to drop downwards on screen.
+  - With **Visual Position Matching**, the script computes the exact screen reference point of the original pre-wrap text and compensates layer position so that the wrapped paragraph sits at the exact visual position where the designer placed the text.
+- **Three Matching Reference Modes**:
+  1. **By Text Justification (Natural Flow)**:
+     - Left-Justified: Paragraph's visual left edge stays fixed at the original left edge, and centers vertically.
+     - Center-Justified: Paragraph's visual center stays fixed at the exact original center (symmetric expansion).
+     - Right-Justified: Paragraph's visual right edge stays fixed at the original right edge, and centers vertically.
+  2. **Visual Center (Symmetric Expansion)**: Keeps the bounding box center fixed at the original center across both X and Y.
+  3. **Top Edge (First Line Fixed)**: Keeps line 1 at its original vertical position, wrapping subsequent lines downwards.
+
+### ⚓ 8. Anchor Point Auto-Alignment to Text Justification (`AE-Align-AnchorPoint` Integration)
 - **Automatic Justification Alignment**: Automatically aligns the layer's Anchor Point to match the active text justification (Default: **Enabled**):
   - **Left Justified** $\to$ Anchor Point placed at the visual Left edge.
   - **Center Justified** $\to$ Anchor Point placed at the visual Center.
@@ -99,12 +111,12 @@ BALANCED PARAGRAPH COMPOSITION (AE Advanced Text Wrap)
   1. **Apply Once (Baked Position)**: Zero-shift static bake. Calculates the delta $\Delta \vec{A} = \vec{A}_{\text{target}} - \vec{A}_{\text{orig}}$, scales by layer scale, and rotates through 2D rotation or 3D Euler angles to compensate `Position` with sub-pixel precision ($0.00\text{px}$ content jump).
   2. **Live Expression (Reactive)**: Sets a dynamic `anchorPoint` expression that reads `sourceRectAtTime` and `doc.justification` in real time, accompanied by a scale-safe `position` compensator expression. If the designer changes text alignment in the Character panel, the anchor point and position adapt dynamically!
 
-### 🔄 8. Universal Text Layer & Alignment Support
+### 🔄 9. Universal Text Layer & Alignment Support
 - **Point Text**: Injects native After Effects carriage returns (`\r`), converting infinite 1-line Point text into an immaculately wrapped multi-line paragraph without shifting the layer's baseline origin or anchor point.
 - **Paragraph (Box) Text**: Updates `doc.boxTextSize = [maxWidth, newHeight]` and injects balanced line breaks so AE's internal naive wrapping doesn't distort the composition.
 - **All Alignments**: Left, Center, Right, and Justified text work flawlessly without any coordinate drifting.
 
-### 🤝 9. Ecosystem Interoperability
+### 🤝 10. Ecosystem Interoperability
 - **[AE-Text-Highlight](https://github.com/work2survive/AE-Text-Highlight)**: Seamless compatibility. Highlights built on wrapped text perfectly track the newly formatted line lengths, and search queries match across non-breaking spaces.
 - **[AE-replace-color-emojis](https://github.com/work2survive/AE-replace-color-emojis)**: UTF-16 surrogate pairs (e.g. 🍿, 🚀, ❤️) are treated as indivisible atomic tokens. The tokenizer and hyphenator never split a multi-byte emoji glyph.
 - **[AE-Align-AnchorPoint](https://github.com/work2survive/AE-Align-AnchorPoint)**: Shares the exact affine transformation and Euler rotation compensator algorithms.
