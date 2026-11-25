@@ -69,6 +69,7 @@ BALANCED PARAGRAPH COMPOSITION (AE Advanced Text Wrap)
 - **Safety**: Configurable minimum word length ($\ge 6$ letters), minimum prefix ($\ge 3$), minimum suffix ($\ge 3$), and **hyphen ladder prevention** (penalizes consecutive lines ending with hyphens).
 
 ### 🔗 4. Micro-Typographic Rules & Non-Breaking Spaces (`\u00A0`)
+- **Remove Existing Line Breaks (Default: Enabled / ON)**: Automatically detects and strips existing manual line breaks (`\r`, `\n`, `\r\n`, `\u2028`, `\u2029`) and collapses adjoining spaces before computing the optimal text wrap. This enables awkward pre-broken subtitles, clipboard quotes, or messy multi-line text to be seamlessly composed from scratch into a unified, flowing paragraph. Unchecking this option preserves all intentional manual paragraph breaks.
 - **Avoid Dangling Short Words**: Automatically binds short prepositions and articles (`a`, `the`, `in`, `on`, `for`, `with`, `by`, `of`, `de`, `pour`, `dans`, `und`) to the next word with `\u00A0`.
 - **Numbers & Units**: Keeps figures and units/symbols together (`100 px`, `50 %`, `1920 x 1080`, `25 kg`, `15 min`).
 - **Currency & Honorifics**: Keeps currencies (`$ 500`, `€ 250`) and titles (`Dr. Smith`, `Mr. Jones`, `e.g. typography`) bound.
