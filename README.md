@@ -74,9 +74,11 @@ BALANCED PARAGRAPH COMPOSITION (AE Advanced Text Wrap)
 - **Currency & Honorifics**: Keeps currencies (`$ 500`, `€ 250`) and titles (`Dr. Smith`, `Mr. Jones`, `e.g. typography`) bound.
 - **Widow & Orphan Prevention**: Binds the penultimate word to the final word of every paragraph so no single word can ever sit alone on a line.
 
-### 📏 5. Max Text Width Constraint (in Pixels)
-- Scrubbable slider (100 px to 1920 px) and direct numeric text input.
-- Serves as the strict boundary constraint for all wrapping and hyphenation calculations.
+### 📏 5. Dual Width Constraints: Max Width & Desired Approx Width (in Pixels)
+- **Max Width (Ceiling)**: Scrubbable slider (100 px to 1920 px) defining the strict physical boundary constraint. No line is ever permitted to exceed this limit.
+- **Desired Approx Width (Target)**: Scrubbable slider (60 px to 1900 px) defining the optimal target line width for the paragraph composer.
+- **Strict Invariance Guarantee**: The Desired Approx Width is **always strictly smaller than the Max Width** (`desiredWidth < maxWidth`). Moving either slider dynamically clamps and pushes the other to preserve the safety buffer.
+- **Harmonious Paragraph Shaping**: By decoupling the target width ($W_{\text{target}}$) from the maximum boundary ceiling ($W_{\text{max}}$), the Knuth-Plass algorithm can naturally balance lines around your ideal visual width while allowing breathing room up to the ceiling to accommodate long words or complex sentences without forced line breaks.
 
 ### 💾 6. Non-Destructive State Storage & 1-Click Restore
 - Stores the original pre-wrap text, box type, and stated dimensions inside an **`Advanced Text Wrap`** Slider Control effect expression comment payload:
@@ -137,21 +139,24 @@ The web emulator provides:
 
 ## 5. Mathematical Formulation
 
-### Knuth-Plass Global Penalty Function
-For a paragraph composed of $n$ tokens wrapped into $M$ visual lines with constraint width $W_{\text{max}}$:
+### Knuth-Plass Global Penalty Function with Dual Constraints
+For a paragraph composed of $n$ tokens wrapped into $M$ visual lines with constraint ceiling $W_{\text{max}}$ and desired approx target width $W_{\text{target}}$ ($W_{\text{target}} < W_{\text{max}}$):
 
-$$\Delta_k = W_{\text{max}} - \text{Width}(\text{Line}_k)$$
+$$\Delta_k = W_{\text{target}} - \text{Width}(\text{Line}_k)$$
 
 $$P_{\text{line}}(k) = \begin{cases}
 \infty & \text{if } \text{Width}(\text{Line}_k) > W_{\text{max}} \\
-\Delta_k^2 + P_{\text{hyphen}} + P_{\text{ladder}} & \text{if } 1 \le k < M \\
+\Delta_k^2 + P_{\text{hyphen}} + P_{\text{ladder}} & \text{if } 1 \le k < M \text{ and } \Delta_k \ge 0 \\
+1.6 \cdot \Delta_k^2 + P_{\text{hyphen}} + P_{\text{ladder}} & \text{if } 1 \le k < M \text{ and } \text{Width}(\text{Line}_k) > W_{\text{target}} \\
 P_{\text{widow}} & \text{if } k = M
 \end{cases}$$
 
 Where:
+- $W_{\text{target}}$ is the user-defined **Desired Approx Width** around which lines visually harmonize.
+- $W_{\text{max}}$ is the strict **Max Width Ceiling** constraint ($W_{\text{target}} < W_{\text{max}}$).
 - $P_{\text{hyphen}} = 8000$ (discourages unnecessary hyphenation).
 - $P_{\text{ladder}} = 20000$ (prevents consecutive line-ending hyphens).
-- $P_{\text{widow}} = 50000$ if $\text{Width}(\text{Line}_M) < 0.25 \times W_{\text{max}}$ or if the line contains only 1 word; $0$ otherwise.
+- $P_{\text{widow}} = 50000$ if $\text{Width}(\text{Line}_M) < 0.25 \times W_{\text{target}}$ or if the line contains only 1 word; $0$ otherwise.
 
 $$\text{Optimal Breaks} = \arg\min \sum_{k=1}^M P_{\text{line}}(k)$$
 
