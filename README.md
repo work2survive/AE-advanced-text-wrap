@@ -48,7 +48,7 @@ BALANCED PARAGRAPH COMPOSITION (AE Advanced Text Wrap)
 - Optimizes total paragraph slack: minimizes raggedness variance and produces uniform visual density.
 - Eliminates ugly line jumps and prevents orphan lines.
 
-### 📐 2. Five Selectable Wrap Methods
+### 📐 2. Six Selectable Wrap Methods
 | Wrap Method | Ideal Use Case | Visual Behavior |
 | :--- | :--- | :--- |
 | **Balanced Paragraph** | Body text, captions, subtitles | Minimizes raggedness variance across the entire paragraph. |
@@ -56,6 +56,7 @@ BALANCED PARAGRAPH COMPOSITION (AE Advanced Text Wrap)
 | **Optical Pyramid** | Titles, poetic stanzas, quote cards | Symmetrically grades lines so length expands gracefully. |
 | **Reverse Pyramid** | Headlines, broadcast lower-thirds | Top-heavy composition: first line is widest, tapering down. |
 | **Compact Block** | UI cards, restricted badges | Tightest packing of lines within the max pixel constraint. |
+| **Optical Ellipse** | Circular badges, convex lens cards | Shapes lines into a smooth elliptical contour with forced center justification. |
 
 ### 🔤 3. Multilingual Algorithmic Syllabification & Hyphenation
 - Zero external dependencies: 100% native ExtendScript ECMAScript 3 engine.
